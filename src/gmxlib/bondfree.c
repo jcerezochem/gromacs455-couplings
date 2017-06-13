@@ -2341,6 +2341,121 @@ real cross_bond_angle(int nbonds,
   return vtot;
 }
 
+real cross_bond_dihed(int nbonds,
+		      const t_iatom forceatoms[],const t_iparams forceparams[],
+		      const rvec x[],rvec f[],rvec fshift[],
+		      const t_pbc *pbc,const t_graph *g,
+		      real lambda,real *dvdlambda,
+		      const t_mdatoms *md,t_fcdata *fcd,
+		      int *global_atom_index)
+{
+
+  /* General things */
+  int  i,k,type,ai,aj,ak,al;
+  real vtot,vbd;
+  /* Parameters */
+  real ph0,r0,kbd;
+  int  mult;
+  /* Virial stuff ?? */
+  ivec jt,dt_ij,dt_kj;
+  /* Computation of r/phi */
+  real dr,dr2,dx;
+  rvec r_ij,r_kj,r_kl,m,n;
+  int  t1,t2,t3;
+  real phi,sign;
+  real mdphi,sdphi,cdphi;
+  /* For forces */
+  real dvdphi,dvdr,fbond,fkj;
+  int  ki;
+  ivec dt;
+
+  vtot = 0.0;
+
+  for(i=0; (i<nbonds); ) {
+    type = forceatoms[i++];
+    ai   = forceatoms[i++];
+    aj   = forceatoms[i++];
+    ak   = forceatoms[i++];
+    al   = forceatoms[i++];
+    
+    /* Compute dihedral angle */
+    phi=dih_angle(x[ai],x[aj],x[ak],x[al],pbc,r_ij,r_kj,r_kl,m,n,
+                  &sign,&t1,&t2,&t3);
+    ki=t2;
+    /* and bond length (from bonds()) */
+    dr2  = iprod(r_kj,r_kj);		
+    dr   = dr2*gmx_invsqrt(dr2);
+  
+    /* Take parameters */
+    r0   = forceparams[type].cross_bd.rA;
+    ph0  = forceparams[type].cross_bd.phiA * DEG2RAD;
+    kbd  = forceparams[type].cross_bd.k;
+    mult = forceparams[type].cross_bd.mult;
+
+    /* ------------------------- */
+    /* Energy (can be negative!) */
+    /* ------------------------- */
+
+    /* Bond part from harmonic() */
+    dx   = dr-r0;
+    /* Dihedral part taken from dopdihs() */
+    mdphi = mult*phi - ph0;
+    sdphi = sin(mdphi);
+    cdphi = cos(mdphi);
+
+    vbd   = kbd*dx*sdphi;
+    //printf("kbd: %10.5f;  dx: %10.5f;  sdphi= %10.5f\n",kbd,dx,sdphi);
+    //printf("atoms: %d %d %d %d\n",ai,aj,ak,al);
+    //printf("mult= %d;  phi= %10.5f;  phi0= %10.5f;   mdphi=%10.5f\n",mult,phi,ph0,mdphi);
+    //printf("r0= %10.5fi\n",r0);
+    //printf("mult= %d; from top= %d\n",mult,forceparams[type].cross_bd.mult);
+    //printf("BD potential = %10.5f\n",vbd); 
+    vtot += vbd;
+
+     
+   /* ------ */
+   /* Forces */
+   /* ------ */
+   /* Transform from internal (r,phi) to cartesian forces */
+   /* wrt r (from bonds()) */
+   dvdr   = kbd*sdphi;
+   fbond  = -dvdr*gmx_invsqrt(dr2);
+   if (g) {
+     ivec_sub(SHIFT_IVEC(g,ak),SHIFT_IVEC(g,aj),dt);
+     ki=IVEC2IS(dt);
+   }
+   for (k=0; (k<DIM); k++) {			/*  15		*/
+     fkj=fbond*r_kj[k];
+     f[ak][k]+=fkj;
+     f[aj][k]-=fkj;
+     fshift[ki][k]+=fkj;
+     fshift[CENTRAL][k]-=fkj;
+   }
+   /* wrt phi (from pdih) */
+   dvdphi = kbd*dx*mult*cdphi;
+   do_dih_fup(ai,aj,ak,al,dvdphi,r_ij,r_kj,r_kl,m,n,
+   	       f,fshift,pbc,g,x,t1,t2,t3);
+
+    /* ------------------------- */
+    /* Virial stuff */
+    /* ------------------------- */
+   // **** TO BE DONE (esto exactamente, ¿qué es?) ***
+   // if (g) {
+   //   copy_ivec(SHIFT_IVEC(g,aj),jt);
+   //   
+   //   ivec_sub(SHIFT_IVEC(g,ai),jt,dt_ij);
+   //   ivec_sub(SHIFT_IVEC(g,ak),jt,dt_kj);
+   //   t1=IVEC2IS(dt_ij);
+   //   t2=IVEC2IS(dt_kj);
+   // }      
+    //rvec_inc(fshift[t1],0.0);
+    //rvec_inc(fshift[CENTRAL],0.0);
+    //rvec_inc(fshift[t2],0.0);               /* 9 */
+    /* 163 TOTAL	*/
+  }
+  return vtot;
+}
+
 static real bonded_tab(const char *type,int table_nr,
 		       const bondedtable_t *table,real kA,real kB,real r,
 		       real lambda,real *V,real *F)

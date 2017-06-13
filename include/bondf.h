@@ -139,7 +139,7 @@ void do_dih_fup(int i,int j,int k,int l,real ddphi,
  *************************************************************************/
   t_ifunc bonds,g96bonds,morse_bonds,cubic_bonds,FENE_bonds,restraint_bonds;
   t_ifunc angles,g96angles,cross_bond_bond,cross_bond_angle,urey_bradley,quartic_angles;
-  t_ifunc pdihs,idihs,rbdihs;
+  t_ifunc pdihs,idihs,rbdihs,cross_bond_dihed;
   t_ifunc tab_bonds,tab_angles,tab_dihs;
   t_ifunc polarize,water_pol,thole_pol,angres,angresz,unimplemented;
 
