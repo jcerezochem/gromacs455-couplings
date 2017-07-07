@@ -253,10 +253,11 @@ static void assign_param(t_functype ftype,t_iparams *newparam,
           
     break;
   case F_CROSS_BOND_DIHED:
-    newparam->cross_bd.rA   =old[0];
-    newparam->cross_bd.phiA =old[1];
-    newparam->cross_bd.k    =old[2];
-    newparam->cross_bd.mult =old[3];
+    newparam->cross_bd.bindex =old[0];
+    newparam->cross_bd.rA   =old[1];
+    newparam->cross_bd.phiA =old[2];
+    newparam->cross_bd.k    =old[3];
+    newparam->cross_bd.mult =old[4];
     break;
   case F_POSRES:
     newparam->posres.fcA[XX]   = old[0];

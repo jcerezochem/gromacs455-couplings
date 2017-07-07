@@ -2361,12 +2361,13 @@ real cross_bond_dihed(int nbonds,
   /* Computation of r/phi */
   real dr,dr2,dx;
   rvec r_ij,r_kj,r_kl,m,n;
+  rvec rb;
   int  t1,t2,t3;
+  int  ki, bindex, a1, a2;
   real phi,sign;
   real mdphi,sdphi,cdphi;
   /* For forces */
   real dvdphi,dvdr,fbond,fkj;
-  int  ki;
   ivec dt;
 
   vtot = 0.0;
@@ -2377,21 +2378,49 @@ real cross_bond_dihed(int nbonds,
     aj   = forceatoms[i++];
     ak   = forceatoms[i++];
     al   = forceatoms[i++];
-    
-    /* Compute dihedral angle */
-    phi=dih_angle(x[ai],x[aj],x[ak],x[al],pbc,r_ij,r_kj,r_kl,m,n,
-                  &sign,&t1,&t2,&t3);
-    ki=t2;
-    /* and bond length (from bonds()) */
-    dr2  = iprod(r_kj,r_kj);		
-    dr   = dr2*gmx_invsqrt(dr2);
-  
+
     /* Take parameters */
+    bindex   = forceparams[type].cross_bd.bindex;
     r0   = forceparams[type].cross_bd.rA;
     ph0  = forceparams[type].cross_bd.phiA * DEG2RAD;
     kbd  = forceparams[type].cross_bd.k;
     mult = forceparams[type].cross_bd.mult;
-
+    
+    /* Compute dihedral angle */
+    phi=dih_angle(x[ai],x[aj],x[ak],x[al],pbc,r_ij,r_kj,r_kl,m,n,
+                  &sign,&t1,&t2,&t3);
+    if (bindex==1) {
+        ki=t1;
+        copy_rvec(r_ij,rb); 
+        a1=ai;
+        a2=aj;
+    } 
+    else if (bindex==2) {
+        ki=t2;
+        copy_rvec(r_kj,rb); 
+        a1=ak;
+        a2=aj;
+    } 
+    else if (bindex==3) {
+        ki=t3;
+        copy_rvec(r_kl,rb); 
+        a1=ak;
+        a2=al;
+    } 
+    else {
+        /* An error should raise in grompp in this situation.
+         * For the moment, simply set the "default"=central bond
+         */
+        ki=t2;
+        copy_rvec(r_kj,rb); 
+        a1=ak;
+        a2=aj;
+    } 
+        
+    /* and bond length (from bonds()) */
+    dr2  = iprod(rb,rb);		
+    dr   = dr2*gmx_invsqrt(dr2);
+  
     /* ------------------------- */
     /* Energy (can be negative!) */
     /* ------------------------- */
@@ -2421,13 +2450,13 @@ real cross_bond_dihed(int nbonds,
    dvdr   = kbd*sdphi;
    fbond  = -dvdr*gmx_invsqrt(dr2);
    if (g) {
-     ivec_sub(SHIFT_IVEC(g,ak),SHIFT_IVEC(g,aj),dt);
+     ivec_sub(SHIFT_IVEC(g,a1),SHIFT_IVEC(g,a2),dt);
      ki=IVEC2IS(dt);
    }
    for (k=0; (k<DIM); k++) {			/*  15		*/
-     fkj=fbond*r_kj[k];
-     f[ak][k]+=fkj;
-     f[aj][k]-=fkj;
+     fkj=fbond*rb[k];
+     f[a1][k]+=fkj;
+     f[a2][k]-=fkj;
      fshift[ki][k]+=fkj;
      fshift[CENTRAL][k]-=fkj;
    }

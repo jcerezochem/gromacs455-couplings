@@ -1069,6 +1069,7 @@ void do_iparams(t_fileio *fio, t_functype ftype,t_iparams *iparams,
     }
     break;
   case F_CROSS_BOND_DIHED:
+    gmx_fio_do_int(fio,iparams->cross_bd.bindex);
     gmx_fio_do_real(fio,iparams->cross_bd.rA);
     gmx_fio_do_real(fio,iparams->cross_bd.phiA);
     gmx_fio_do_real(fio,iparams->cross_bd.k);
