@@ -124,10 +124,16 @@ int ifunc_index(directive d,int type)
       return F_TABDIHS;
     case 9:
       return F_PDIHS;  /* proper dihedrals where we allow multiple terms over single bond */
-    case 10:
-      return F_CROSS_BOND_DIHED;
     default:
       gmx_fatal(FARGS,"Invalid dihedral type %d",type);
+    }
+    break;
+  case d_bond_dihedral:
+    switch (type) {
+    case 1:
+      return F_CROSS_BOND_DIHED;
+    default:
+      gmx_fatal(FARGS,"Invalid bond-dihedral coupling type %d",type);
     }
     break;
   case d_cmaptypes:
@@ -287,6 +293,7 @@ void DS_Init(DirStack **DS)
     set_nec(&(necessary[d_water_polarization]),d_atoms,d_none);
     set_nec(&(necessary[d_thole_polarization]),d_atoms,d_none);
     set_nec(&(necessary[d_dihedrals]),d_atoms,d_none);
+    set_nec(&(necessary[d_bond_dihedral]),d_atoms,d_none);
     set_nec(&(necessary[d_constraints]),d_atoms,d_none);
     set_nec(&(necessary[d_settles]),d_atoms,d_none);
     set_nec(&(necessary[d_system]),d_moleculetype,d_none);

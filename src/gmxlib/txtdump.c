@@ -812,8 +812,7 @@ void pr_iparams(FILE *fp,t_functype ftype,t_iparams *iparams)
 	    iparams->pdihs.mult);
     break;
   case F_CROSS_BOND_DIHED:
-    fprintf(fp,"bindex=%d, rA=%15.8e, phiA=%15.8e, k=%15.8e, mult=%d\n",
-            iparams->cross_bd.bindex,
+    fprintf(fp,"rA=%15.8e, phiA=%15.8e, k=%15.8e, mult=%d\n",
 	    iparams->cross_bd.rA,iparams->cross_bd.phiA,
 	    iparams->cross_bd.k ,iparams->cross_bd.mult);
     break;

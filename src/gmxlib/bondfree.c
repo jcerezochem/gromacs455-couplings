@@ -2363,7 +2363,7 @@ real cross_bond_dihed(int nbonds,
   rvec r_ij,r_kj,r_kl,m,n;
   rvec rb;
   int  t1,t2,t3;
-  int  ki, bindex, a1, a2;
+  int  ki, a1, a2;
   real phi,sign;
   real mdphi,sdphi,cdphi;
   /* For forces */
@@ -2374,13 +2374,14 @@ real cross_bond_dihed(int nbonds,
 
   for(i=0; (i<nbonds); ) {
     type = forceatoms[i++];
+    a1   = forceatoms[i++];
+    a2   = forceatoms[i++];
     ai   = forceatoms[i++];
     aj   = forceatoms[i++];
     ak   = forceatoms[i++];
     al   = forceatoms[i++];
 
     /* Take parameters */
-    bindex   = forceparams[type].cross_bd.bindex;
     r0   = forceparams[type].cross_bd.rA;
     ph0  = forceparams[type].cross_bd.phiA * DEG2RAD;
     kbd  = forceparams[type].cross_bd.k;
@@ -2389,34 +2390,10 @@ real cross_bond_dihed(int nbonds,
     /* Compute dihedral angle */
     phi=dih_angle(x[ai],x[aj],x[ak],x[al],pbc,r_ij,r_kj,r_kl,m,n,
                   &sign,&t1,&t2,&t3);
-    if (bindex==1) {
-        ki=t1;
-        copy_rvec(r_ij,rb); 
-        a1=ai;
-        a2=aj;
-    } 
-    else if (bindex==2) {
-        ki=t2;
-        copy_rvec(r_kj,rb); 
-        a1=ak;
-        a2=aj;
-    } 
-    else if (bindex==3) {
-        ki=t3;
-        copy_rvec(r_kl,rb); 
-        a1=ak;
-        a2=al;
-    } 
-    else {
-        /* An error should raise in grompp in this situation.
-         * For the moment, simply set the "default"=central bond
-         */
-        ki=t2;
-        copy_rvec(r_kj,rb); 
-        a1=ak;
-        a2=aj;
-    } 
-        
+
+    /* Compute distance vector */
+    ki = pbc_rvec_sub(pbc,x[a1],x[a2],rb);
+    
     /* and bond length (from bonds()) */
     dr2  = iprod(rb,rb);		
     dr   = dr2*gmx_invsqrt(dr2);

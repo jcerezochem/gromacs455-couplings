@@ -569,7 +569,9 @@ void push_bt(directive d,t_params bt[],int nral,
     "%s%s%s%s",
     "%s%s%s%s%s",
     "%s%s%s%s%s%s",
-    "%s%s%s%s%s%s%s"
+    "%s%s%s%s%s%s%s",
+    "%s%s%s%s%s%s%s%s",
+    "%s%s%s%s%s%s%s%s%s"
   };
   const char *formnl[MAXATOMLIST+1] = {
     "%*s",
@@ -578,7 +580,9 @@ void push_bt(directive d,t_params bt[],int nral,
     "%*s%*s%*s%*s",
     "%*s%*s%*s%*s%*s",
     "%*s%*s%*s%*s%*s%*s",
-    "%*s%*s%*s%*s%*s%*s%*s"
+    "%*s%*s%*s%*s%*s%*s%*s",
+    "%*s%*s%*s%*s%*s%*s%*s%*s",
+    "%*s%*s%*s%*s%*s%*s%*s%*s%*s"
   };
   const char *formlf = "%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf";
   int      i,ft,ftype,nn,nrfp,nrfpA,nrfpB;
@@ -594,7 +598,7 @@ void push_bt(directive d,t_params bt[],int nral,
   
   /* Make format string (nral ints+functype) */
   if ((nn=sscanf(line,formal[nral],
-		 alc[0],alc[1],alc[2],alc[3],alc[4],alc[5])) != nral+1) {
+		 alc[0],alc[1],alc[2],alc[3],alc[4],alc[5],alc[6],alc[7])) != nral+1) {
     sprintf(errbuf,"Not enough atomtypes (%d instead of %d)",nn-1,nral);
     warning_error(wi,errbuf);
     return;
@@ -647,7 +651,9 @@ void push_dihedraltype(directive d,t_params bt[],
     "%s%s%s%s",
     "%s%s%s%s%s",
     "%s%s%s%s%s%s",
-    "%s%s%s%s%s%s%s"
+    "%s%s%s%s%s%s%s",
+    "%s%s%s%s%s%s%s%s",
+    "%s%s%s%s%s%s%s%s%s"
   };
   const char *formnl[MAXATOMLIST+1] = {
     "%*s",
@@ -655,8 +661,10 @@ void push_dihedraltype(directive d,t_params bt[],
     "%*s%*s%*s",
     "%*s%*s%*s%*s",
     "%*s%*s%*s%*s%*s",
-	"%*s%*s%*s%*s%*s%*s",
-	"%*s%*s%*s%*s%*s%*s%*s"
+    "%*s%*s%*s%*s%*s%*s",
+    "%*s%*s%*s%*s%*s%*s%*s",
+    "%*s%*s%*s%*s%*s%*s%*s%*s",
+    "%*s%*s%*s%*s%*s%*s%*s%*s%*s"
   };
   const char *formlf[MAXFORCEPARAM] = {
     "%lf",
@@ -686,7 +694,7 @@ void push_dihedraltype(directive d,t_params bt[],
    * defining the type. If this isn't the case, we try it with 4 atoms
    * and the 5th column defining the dihedral type.
    */
-  nn=sscanf(line,formal[4],alc[0],alc[1],alc[2],alc[3],alc[4]);
+  nn=sscanf(line,formal[4],alc[0],alc[1],alc[2],alc[3],alc[4],alc[5],alc[6]);
   if(nn>=3 && strlen(alc[2])==1 && isdigit(alc[2][0])) {
     nral=2;
     ft    = strtol(alc[nral],NULL,10);
@@ -924,7 +932,7 @@ push_cmaptype(directive d, t_params bt[], int nral, gpp_atomtype_t at,
 	read_cmap = 0;
 	start     = 0;
 	
-	if((nn=sscanf(line,formal,alc[0],alc[1],alc[2],alc[3],alc[4],alc[5],alc[6],alc[7])) != nral+3)
+	if((nn=sscanf(line,formal,alc[0],alc[1],alc[2],alc[3],alc[4],alc[5],alc[6],alc[7],alc[8],alc[9])) != nral+3)
 	{
 		sprintf(errbuf,"Incorrect number of atomtypes for cmap (%d instead of 5)",nn-1);
 		warning_error(wi,errbuf);
@@ -1466,7 +1474,9 @@ void push_bond(directive d,t_params bondtype[],t_params bond[],
     "%d%d%d%d",
     "%d%d%d%d%d",
     "%d%d%d%d%d%d",
-    "%d%d%d%d%d%d%d"
+    "%d%d%d%d%d%d%d",
+    "%d%d%d%d%d%d%d%d",
+    "%d%d%d%d%d%d%d%d%d"
   };
   const char *asformat[MAXATOMLIST]= {
     "%*s%*s",
@@ -1474,7 +1484,9 @@ void push_bond(directive d,t_params bondtype[],t_params bond[],
     "%*s%*s%*s%*s",
     "%*s%*s%*s%*s%*s",
     "%*s%*s%*s%*s%*s%*s",
-    "%*s%*s%*s%*s%*s%*s%*s"
+    "%*s%*s%*s%*s%*s%*s%*s",
+    "%*s%*s%*s%*s%*s%*s%*s%*s",
+    "%*s%*s%*s%*s%*s%*s%*s%*s%*s"
   };
   const char *ccformat="%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf";
   int      nr,i,j,nral,nread,ftype;
@@ -1496,7 +1508,7 @@ void push_bond(directive d,t_params bondtype[],t_params bond[],
   bDef = (NRFP(ftype) > 0);
   
   nread = sscanf(line,aaformat[nral-1],
-		 &aa[0],&aa[1],&aa[2],&aa[3],&aa[4],&aa[5]);
+		 &aa[0],&aa[1],&aa[2],&aa[3],&aa[4],&aa[5],&aa[6],&aa[7],&aa[8]);
   if (nread < nral) {
     too_few(wi);
     return;
@@ -1530,11 +1542,18 @@ void push_bond(directive d,t_params bondtype[],t_params bond[],
 		"In that case move the \"%s\" section to the right molecule.",
 		get_warning_file(wi),get_warning_line(wi),
 		aa[i],dir2str(d),at->nr,dir2str(d),dir2str(d));
-    for(j=i+1; (j<nral); j++)
+    for(j=i+1; (j<nral); j++) {
       if (aa[i] == aa[j]) {
+        /* This warning is transformed into a note for couplings (JC,13/09/2017) */	
 	sprintf(errbuf,"Duplicate atom index (%d) in %s",aa[i],dir2str(d));
+        if ( d != d_bond_dihedral ) {
 	warning(wi,errbuf);
+        }
+        else {
+	warning_note(wi,errbuf);
+        }
       }
+    }
   }
   if (ftype == F_SETTLE)
     if (aa[0]+2 > at->nr)
@@ -1788,7 +1807,9 @@ void push_cmap(directive d, t_params bondtype[], t_params bond[],
 		"%d%d%d%d",
 		"%d%d%d%d%d",
 		"%d%d%d%d%d%d",
-		"%d%d%d%d%d%d%d"
+		"%d%d%d%d%d%d%d",
+		"%d%d%d%d%d%d%d%d",
+		"%d%d%d%d%d%d%d%d%d"
 	};
 	
 	int i,j,nr,ftype,nral,nread,ncmap_params;
@@ -1804,7 +1825,7 @@ void push_cmap(directive d, t_params bondtype[], t_params bond[],
 	ncmap_params = 0;
 	
 	nread = sscanf(line,aaformat[nral-1],
-				   &aa[0],&aa[1],&aa[2],&aa[3],&aa[4],&aa[5]);
+				   &aa[0],&aa[1],&aa[2],&aa[3],&aa[4],&aa[5],&aa[6],&aa[7]);
 	
 	if (nread < nral) 
 	{
@@ -1829,13 +1850,19 @@ void push_cmap(directive d, t_params bondtype[], t_params bond[],
 					  get_warning_file(wi),get_warning_line(wi),
 					  aa[i],dir2str(d),at->nr,dir2str(d),dir2str(d));
 		}
-		
+	
 		for(j=i+1; (j<nral); j++)
 		{
 			if (aa[i] == aa[j]) 
 			{
+                                /* This warning is transformed into a note for couplings (JC,13/09/2017) */	
 				sprintf(errbuf,"Duplicate atom index (%d) in %s",aa[i],dir2str(d));
+                                if ( d != d_bond_dihedral ) {
 				warning(wi,errbuf);
+                                }
+                                else {
+                                warning_note(wi,errbuf);
+                                }
 			}
 		}
 	}

@@ -45,7 +45,7 @@ extern "C" {
 
 
 /* check kernel/toppush.c when you change these numbers */
-#define MAXATOMLIST	6
+#define MAXATOMLIST	8
 #define MAXFORCEPARAM	12
 #define NR_RBDIHS	6
 #define NR_FOURDIHS     4
@@ -154,7 +154,7 @@ typedef union
   struct {real bm,kb;                                      } fene;
   struct {real r1e,r2e,krr;                                } cross_bb;
   struct {real r1e,r2e,r3e,krt;                            } cross_ba;
-  struct {real rA,phiA,k; int mult,bindex;                 } cross_bd;
+  struct {real rA,phiA,k; int mult;                        } cross_bd;
   struct {real theta,ktheta,r13,kUB;                       } u_b;
   struct {real theta,c[5];                                 } qangle; 
   struct {real alpha;                                      } polarize;
