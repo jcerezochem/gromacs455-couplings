@@ -1074,6 +1074,13 @@ void do_iparams(t_fileio *fio, t_functype ftype,t_iparams *iparams,
     gmx_fio_do_real(fio,iparams->cross_bd.k);
     gmx_fio_do_int(fio,iparams->cross_bd.mult);
     break;
+  case F_CROSS_DIHEDF_DIHEDF:
+    gmx_fio_do_real(fio,iparams->cross_dfdf.phiA);
+    gmx_fio_do_real(fio,iparams->cross_dfdf.phiB);
+    gmx_fio_do_real(fio,iparams->cross_dfdf.k);
+    gmx_fio_do_int(fio,iparams->cross_dfdf.mult1);
+    gmx_fio_do_int(fio,iparams->cross_dfdf.mult2);
+    break;
   case F_DISRES:
     gmx_fio_do_int(fio,iparams->disres.label);
     gmx_fio_do_int(fio,iparams->disres.type);

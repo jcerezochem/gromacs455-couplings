@@ -258,6 +258,13 @@ static void assign_param(t_functype ftype,t_iparams *newparam,
     newparam->cross_bd.k    =old[2];
     newparam->cross_bd.mult =old[3];
     break;
+  case F_CROSS_DIHEDF_DIHEDF:
+    newparam->cross_dfdf.phiA =old[0];
+    newparam->cross_dfdf.phiB =old[1];
+    newparam->cross_dfdf.k    =old[2];
+    newparam->cross_dfdf.mult1=old[3];
+    newparam->cross_dfdf.mult2=old[4];
+    break;
   case F_POSRES:
     newparam->posres.fcA[XX]   = old[0];
     newparam->posres.fcA[YY]   = old[1];

@@ -816,6 +816,11 @@ void pr_iparams(FILE *fp,t_functype ftype,t_iparams *iparams)
 	    iparams->cross_bd.rA,iparams->cross_bd.phiA,
 	    iparams->cross_bd.k ,iparams->cross_bd.mult);
     break;
+  case F_CROSS_DIHEDF_DIHEDF:
+    fprintf(fp,"phiA=%15.8e, phiB=%15.8e, k=%15.8e, mult1=%d, mult2=%d\n",
+	    iparams->cross_dfdf.phiA,iparams->cross_dfdf.phiA,
+	    iparams->cross_dfdf.k ,iparams->cross_dfdf.mult1,iparams->cross_dfdf.mult2);
+    break;
   case F_DISRES:
     fprintf(fp,"label=%4d, type=%1d, low=%15.8e, up1=%15.8e, up2=%15.8e, fac=%15.8e)\n",
 	    iparams->disres.label,iparams->disres.type,
