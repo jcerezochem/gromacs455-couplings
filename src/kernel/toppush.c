@@ -1546,7 +1546,9 @@ void push_bond(directive d,t_params bondtype[],t_params bond[],
       if (aa[i] == aa[j]) {
         /* This warning is transformed into a note for couplings (JC,13/09/2017) */	
 	sprintf(errbuf,"Duplicate atom index (%d) in %s",aa[i],dir2str(d));
-        if ( d != d_bond_dihedral ) {
+        if ( d != d_bond_dihedral     &&
+             d != d_dihedral_dihedral &&
+             d != d_angle_dihedral     ) {
 	warning(wi,errbuf);
         }
         else {

@@ -136,6 +136,14 @@ int ifunc_index(directive d,int type)
       gmx_fatal(FARGS,"Invalid bond-dihedral coupling type %d",type);
     }
     break;
+  case d_angle_dihedral:
+    switch (type) {
+    case 1:
+      return F_CROSS_ANGLE_DIHED;
+    default:
+      gmx_fatal(FARGS,"Invalid angle-dihedral coupling type %d",type);
+    }
+    break;
   case d_dihedral_dihedral:
     switch (type) {
     case 1:
@@ -302,6 +310,7 @@ void DS_Init(DirStack **DS)
     set_nec(&(necessary[d_thole_polarization]),d_atoms,d_none);
     set_nec(&(necessary[d_dihedrals]),d_atoms,d_none);
     set_nec(&(necessary[d_bond_dihedral]),d_atoms,d_none);
+    set_nec(&(necessary[d_angle_dihedral]),d_atoms,d_none);
     set_nec(&(necessary[d_dihedral_dihedral]),d_atoms,d_none);
     set_nec(&(necessary[d_constraints]),d_atoms,d_none);
     set_nec(&(necessary[d_settles]),d_atoms,d_none);

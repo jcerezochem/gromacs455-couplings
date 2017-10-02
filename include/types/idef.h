@@ -79,6 +79,7 @@ enum {
   F_PIDIHS, 
   F_TABDIHS,
   F_CROSS_BOND_DIHED,
+  F_CROSS_ANGLE_DIHED,
   F_CROSS_DIHEDF_DIHEDF,
   F_CMAP,
   F_GB12,
@@ -156,6 +157,7 @@ typedef union
   struct {real r1e,r2e,krr;                                } cross_bb;
   struct {real r1e,r2e,r3e,krt;                            } cross_ba;
   struct {real rA,phiA,k; int mult;                        } cross_bd;
+  struct {real thetaA,phiA,k; int mult;                    } cross_ad;
   struct {real phiA,phiB,k; int mult1, mult2;              } cross_dfdf;
   struct {real theta,ktheta,r13,kUB;                       } u_b;
   struct {real theta,c[5];                                 } qangle; 

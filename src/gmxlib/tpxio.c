@@ -1074,6 +1074,12 @@ void do_iparams(t_fileio *fio, t_functype ftype,t_iparams *iparams,
     gmx_fio_do_real(fio,iparams->cross_bd.k);
     gmx_fio_do_int(fio,iparams->cross_bd.mult);
     break;
+  case F_CROSS_ANGLE_DIHED:
+    gmx_fio_do_real(fio,iparams->cross_ad.thetaA);
+    gmx_fio_do_real(fio,iparams->cross_ad.phiA);
+    gmx_fio_do_real(fio,iparams->cross_ad.k);
+    gmx_fio_do_int(fio,iparams->cross_ad.mult);
+    break;
   case F_CROSS_DIHEDF_DIHEDF:
     gmx_fio_do_real(fio,iparams->cross_dfdf.phiA);
     gmx_fio_do_real(fio,iparams->cross_dfdf.phiB);

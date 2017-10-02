@@ -258,6 +258,12 @@ static void assign_param(t_functype ftype,t_iparams *newparam,
     newparam->cross_bd.k    =old[2];
     newparam->cross_bd.mult =old[3];
     break;
+  case F_CROSS_ANGLE_DIHED:
+    newparam->cross_ad.thetaA=old[0];
+    newparam->cross_ad.phiA  =old[1];
+    newparam->cross_ad.k     =old[2];
+    newparam->cross_ad.mult  =old[3];
+    break;
   case F_CROSS_DIHEDF_DIHEDF:
     newparam->cross_dfdf.phiA =old[0];
     newparam->cross_dfdf.phiB =old[1];

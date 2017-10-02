@@ -816,6 +816,11 @@ void pr_iparams(FILE *fp,t_functype ftype,t_iparams *iparams)
 	    iparams->cross_bd.rA,iparams->cross_bd.phiA,
 	    iparams->cross_bd.k ,iparams->cross_bd.mult);
     break;
+  case F_CROSS_ANGLE_DIHED:
+    fprintf(fp,"thetaA=%15.8e, phiA=%15.8e, k=%15.8e, mult=%d\n",
+	    iparams->cross_ad.thetaA,iparams->cross_ad.phiA,
+	    iparams->cross_ad.k     ,iparams->cross_ad.mult);
+    break;
   case F_CROSS_DIHEDF_DIHEDF:
     fprintf(fp,"phiA=%15.8e, phiB=%15.8e, k=%15.8e, mult1=%d, mult2=%d\n",
 	    iparams->cross_dfdf.phiA,iparams->cross_dfdf.phiA,
