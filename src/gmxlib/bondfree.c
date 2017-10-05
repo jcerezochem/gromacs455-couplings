@@ -2548,9 +2548,15 @@ real cross_angle_dihed(int nbonds,
     /* ------ */
     /* Transform from internal (theta,phi) to cartesian forces */
     /* wrt theta (from angles()) */
-    dvdt       = kad*sdphi;
+    /* NOTE: dvdt contains the force NOT the gradient: so we need to change the sign */
+    dvdt       = -kad*sdphi;
     //printf("dvdt = %10.5f\n",dvdt); 
     cos_theta2 = sqr(cos_theta);
+    //printf("Atoms(a):%3i%3i%3i   \n",a1+1,a2+1,a3+1);
+    //printf("Atoms(d):%3i%3i%3i%3i\n",ai+1,aj+1,ak+1,al+1);
+    //printf("theta      = %10.5f\n",theta);
+    //printf("cos(theta) = %10.5f\n",cos_theta);
+    //fflush(stdout);
     if (cos_theta2 < 1) {
       int  k;
       real st,sth;
