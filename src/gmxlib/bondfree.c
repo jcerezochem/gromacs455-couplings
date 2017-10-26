@@ -2409,7 +2409,7 @@ real cross_bond_dihed(int nbonds,
     sdphi = sin(mdphi);
     cdphi = cos(mdphi);
 
-    vbd   = kbd*dx*sdphi;
+    vbd   = kbd*dx*(1.0+sdphi);
     //printf("kbd: %10.5f;  dx: %10.5f;  sdphi= %10.5f\n",kbd,dx,sdphi);
     //printf("atoms: %d %d %d %d\n",ai,aj,ak,al);
     //printf("mult= %d;  phi= %10.5f;  phi0= %10.5f;   mdphi=%10.5f\n",mult,phi,ph0,mdphi);
@@ -2424,7 +2424,7 @@ real cross_bond_dihed(int nbonds,
     /* ------ */
     /* Transform from internal (r,phi) to cartesian forces */
     /* wrt r (from bonds()) */
-    dvdr   = kbd*sdphi;
+    dvdr   = kbd*(1.0+sdphi);
     fbond  = -dvdr*gmx_invsqrt(dr2);
     if (g) {
       ivec_sub(SHIFT_IVEC(g,a1),SHIFT_IVEC(g,a2),dt);
@@ -2531,7 +2531,7 @@ real cross_angle_dihed(int nbonds,
     sdphi = sin(mdphi);
     cdphi = cos(mdphi);
 
-    vad   = kad*dx*sdphi;
+    vad   = kad*dx*(1.0+sdphi);
     
     vtot += vad;
 
@@ -2549,7 +2549,7 @@ real cross_angle_dihed(int nbonds,
     /* Transform from internal (theta,phi) to cartesian forces */
     /* wrt theta (from angles()) */
     /* NOTE: dvdt contains the force NOT the gradient: so we need to change the sign */
-    dvdt       = -kad*sdphi;
+    dvdt       = -kad*(1.0+sdphi);
     //printf("dvdt = %10.5f\n",dvdt); 
     cos_theta2 = sqr(cos_theta);
     //printf("Atoms(a):%3i%3i%3i   \n",a1+1,a2+1,a3+1);
